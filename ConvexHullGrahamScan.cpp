@@ -6,11 +6,12 @@
 #include "Segment2D.h"
 
 
-SimplePoint2D origin = SimplePoint2D(0, 0);
+Number zero = Number("0");
+SimplePoint2D origin = SimplePoint2D(zero, zero);
 
 Number square(Number n)     { return n * n; }
-Number abs(Number n)        { return (n < 0) ? (Number("-1") * n) : n; }
-Number sign(Number n)       { return (n < 0) ? Number("-1") : Number("1"); }
+Number abs(Number n)        { return (n < Number("0")) ? (Number("-1") * n) : n; }
+Number sign(Number n)       { return (n < Number("0")) ? Number("-1") : Number("1"); }
 
 Number distSquared(SimplePoint2D a, SimplePoint2D b)
 {
@@ -52,7 +53,7 @@ bool isCounterClockwiseTurn(SimplePoint2D p1, SimplePoint2D p2, SimplePoint2D p3
     Number v2_y = p3.y - p2.y;
 
     Number cross_product_z = (v1_x * v2_y) - (v1_y * v2_x);
-    return cross_product_z > 0;
+    return cross_product_z > zero;
 }
 
 // Converts an vector of SimplePoint2D into a vector of Segment2Ds.
