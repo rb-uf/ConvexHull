@@ -1,9 +1,12 @@
 
 #include <vector>
 #include <algorithm>
+#include <iostream>
 #include "Number.h"
 #include "SimplePoint2D.h"
 #include "Segment2D.h"
+#include "Region2D.h"
+#include "Point2D.h"
 
 
 Number zero = Number("0");
@@ -19,6 +22,8 @@ Number distSquared(SimplePoint2D a, SimplePoint2D b)
 }
 Number angleFactor(SimplePoint2D sp)
 {
+    if (square(sp.x) + square(sp.y) == zero)
+        return zero;
     return sign(sp.x) * (square(sp.x) / (square(sp.x) + square(sp.y)));
 }
 SimplePoint2D relativeCoord(SimplePoint2D origin, SimplePoint2D p)
@@ -72,10 +77,20 @@ std::vector<Segment2D> pointsToSegments(std::vector<SimplePoint2D> points)
     return segments;
 }
 
+std::vector<SimplePoint2D> Point2DToVector(Point2D Point2D_points)
+{
+    std::vector<SimplePoint2D> points;
+    for (SimplePoint2D p : Point2D_points)
+        points.push_back(p);
+    return points;
+}
+
 
 // https://en.wikipedia.org/wiki/Graham_scan
-std::vector<Segment2D> ConvexHullGrahamScan(std::vector<SimplePoint2D> points)
+Region2D ConvexHullGrahamScan(Point2D Point2D_points)
 {
+    std::vector<SimplePoint2D> points = Point2DToVector(Point2D_points);
+
     if (points.size() <= 3)
         return pointsToSegments(points);
 
@@ -102,6 +117,26 @@ std::vector<Segment2D> ConvexHullGrahamScan(std::vector<SimplePoint2D> points)
         stack.push_back(p);
     }
 
-    return pointsToSegments(stack);
+    return Region2D(pointsToSegments(stack));
 }
 
+
+void printSimplePoint2D(SimplePoint2D sp)
+{
+    std::cout << "(" << sp.x << " " << sp.y << ")";
+}
+
+void printSegment2D(Segment2D s)
+{
+    std::cout << "(segment ";
+    printSimplePoint2D(s.leftEndPoint);
+    std::cout << " ";
+    printSimplePoint2D(s.rightEndPoint);
+    std::cout << ")" << std::endl;
+}
+
+void printRegion2D(Region2D r)
+{
+    for (Segment2D s : r)
+        printSegment2D(s);
+}

@@ -1,7 +1,9 @@
 #include <iostream>
+#include "ConvexHullGrahamScan.h"
+#include "TestCases.h"
 
 int main()
 {
-	std::cout << "test" << std::endl;
+	printRegion2D(ConvexHullGrahamScan(Point2D(test1)));
 	return 0;
 }

@@ -1,2 +1,5 @@
+#include "Point2D.h"
+#include "Region2D.h"
 
-std::vector<SimplePoint2D> ConvexHullGrahamScan(std::vector<SimplePoint2D> points);
+Region2D ConvexHullGrahamScan(Point2D points);
+void printRegion2D(Region2D r);
