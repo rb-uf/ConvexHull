@@ -22,7 +22,7 @@ Number distSquared(SimplePoint2D a, SimplePoint2D b)
 }
 Number angleFactor(SimplePoint2D sp)
 {
-    if (square(sp.x) + square(sp.y) == zero)
+    if (sp.x == zero && sp.y == zero)
         return zero;
     return sign(sp.x) * (square(sp.x) / (square(sp.x) + square(sp.y)));
 }
@@ -73,6 +73,8 @@ std::vector<Segment2D> pointsToSegments(std::vector<SimplePoint2D> points)
 
     if (points.front() != points.back())
         segments.push_back(Segment2D(points.front(), points.back()));
+
+    cout << "[DEBUG] End of pointsToSegments." << endl;
 
     return segments;
 }
