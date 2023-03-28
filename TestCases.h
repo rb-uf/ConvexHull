@@ -12,3 +12,16 @@ vector<SimplePoint2D> test1 {
 	PT(0, 2),
 	PT(1, 1)
 };
+
+vector<SimplePoint2D> test2 {
+	PT(2, 3),
+	PT(4, 1),
+	PT(6, 2),
+	PT(5, 3),
+	PT(5, 4),
+	PT(4, 3),
+	PT(3, 2),
+	PT(3, 3),
+	PT(1, 2),
+	PT(3, 4)
+};

@@ -20,15 +20,39 @@ Number distSquared(SimplePoint2D a, SimplePoint2D b)
 {
     return square(a.x - b.x) + square(a.y - b.y);
 }
+
+// returns 2 for the origin, and between 1 and -1 (inclusive) for all others.
 Number angleFactor(SimplePoint2D sp)
 {
     if (sp.x == zero && sp.y == zero)
-        return zero;
+        return Number("2");     // the origin is always first
     return sign(sp.x) * (square(sp.x) / (square(sp.x) + square(sp.y)));
 }
+
 SimplePoint2D relativeCoord(SimplePoint2D origin, SimplePoint2D p)
 {
     return SimplePoint2D(p.x - origin.x, p.y - origin.y);
+}
+
+
+void printSimplePoint2D(SimplePoint2D sp)
+{
+    std::cout << "(" << sp.x << " " << sp.y << ")";
+}
+
+void printSegment2D(Segment2D s)
+{
+    std::cout << "(segment ";
+    printSimplePoint2D(s.leftEndPoint);
+    std::cout << " ";
+    printSimplePoint2D(s.rightEndPoint);
+    std::cout << ")" << std::endl;
+}
+
+void printRegion2D(Region2D r)
+{
+    for (Segment2D s : r)
+        printSegment2D(s);
 }
 
 
@@ -74,8 +98,6 @@ std::vector<Segment2D> pointsToSegments(std::vector<SimplePoint2D> points)
     if (points.front() != points.back())
         segments.push_back(Segment2D(points.front(), points.back()));
 
-    cout << "[DEBUG] End of pointsToSegments." << endl;
-
     return segments;
 }
 
@@ -114,31 +136,12 @@ Region2D ConvexHullGrahamScan(Point2D Point2D_points)
 
     std::vector<SimplePoint2D> stack;
     for (SimplePoint2D p : points) {
-        while (stack.size() > 1 && isCounterClockwiseTurn(stack[stack.size()-2], stack.back(), p) <= 0)
+        while (stack.size() > 1 && isCounterClockwiseTurn(stack[stack.size()-2], stack.back(), p) <= 0) {
             stack.pop_back();
+        }
         stack.push_back(p);
     }
 
     return Region2D(pointsToSegments(stack));
 }
 
-
-void printSimplePoint2D(SimplePoint2D sp)
-{
-    std::cout << "(" << sp.x << " " << sp.y << ")";
-}
-
-void printSegment2D(Segment2D s)
-{
-    std::cout << "(segment ";
-    printSimplePoint2D(s.leftEndPoint);
-    std::cout << " ";
-    printSimplePoint2D(s.rightEndPoint);
-    std::cout << ")" << std::endl;
-}
-
-void printRegion2D(Region2D r)
-{
-    for (Segment2D s : r)
-        printSegment2D(s);
-}
