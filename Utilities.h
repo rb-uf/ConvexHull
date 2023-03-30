@@ -21,3 +21,5 @@ void printSegment2D(Segment2D s);
 void printRegion2D(Region2D r);
 
 bool isCounterClockwiseTurn(SimplePoint2D p1, SimplePoint2D p2, SimplePoint2D p3);
+
+std::vector<Segment2D> pointsToSegments(std::vector<SimplePoint2D> points);

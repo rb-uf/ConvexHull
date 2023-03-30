@@ -50,3 +50,19 @@ bool isCounterClockwiseTurn(SimplePoint2D p1, SimplePoint2D p2, SimplePoint2D p3
     Number cross_product_z = (v1_x * v2_y) - (v1_y * v2_x);
     return cross_product_z > ZERO;
 }
+
+// Converts an vector of SimplePoint2D into a vector of Segment2Ds.
+// Segments connect one point to the next, according to the ordering of the points.
+// If the first and last point are not equal, a segment will be drawn between them as well.
+std::vector<Segment2D> pointsToSegments(std::vector<SimplePoint2D> points)
+{
+    std::vector<Segment2D> segments;
+
+    for (int i = 0; i < points.size()-1; i++)
+        segments.push_back(Segment2D(points[i], points[i+1]));
+
+    if (points.front() != points.back())
+        segments.push_back(Segment2D(points.front(), points.back()));
+
+    return segments;
+}
