@@ -1,12 +1,7 @@
 #include "ConvexHullJarvisMarch.h"
 #include <iostream>
+#include "Utilities.h"
 using namespace std;
-
-Number orientation(SimplePoint2D p, SimplePoint2D q, SimplePoint2D r)
-{   
-    Number turn = (q.y - p.y) * (r.x -q.x) - (q.x - p.x) * (r.y - q.y);
-    return turn;
-}
 
 Region2D ConvexHullJarvisMarch(Point2D pointset){
     vector<SimplePoint2D> points;
@@ -40,7 +35,7 @@ Region2D ConvexHullJarvisMarch(Point2D pointset){
         hull.push_back(points[p]);
         for(int j = 0; j < points.size(); j++)
         {
-            if(orientation(points[p], points[j], points[q]) > Number("0"))
+            if(isCounterClockwiseTurn(points[p], points[j], points[q]))
             {
                 q = j;
             }

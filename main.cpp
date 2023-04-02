@@ -9,20 +9,20 @@ int main()
 {
     cout << "-------- test1 --------" << endl;
     cout << "Graham Scan" << endl;
-    printRegion2D(ConvexHullGrahamScan(Point2D(test1)));
+    ConvexHullGrahamScan(Point2D(test1)).print();
     cout << "Monotone Chain" << endl;
-    printRegion2D(ConvexHullMonotoneChain(Point2D(test1)));
+    ConvexHullMonotoneChain(Point2D(test1)).print();
     cout << "Jarvis March" << endl;
-    printRegion2D(ConvexHullJarvisMarch(Point2D(test1)));
+    ConvexHullJarvisMarch(Point2D(test1)).print();
     cout << endl;
 
     cout << "-------- test2 --------" << endl;
     cout << "Graham Scan" << endl;
-    printRegion2D(ConvexHullGrahamScan(Point2D(test2)));
+    ConvexHullGrahamScan(Point2D(test2)).print();
     cout << "Monotone Chain" << endl;
-    printRegion2D(ConvexHullMonotoneChain(Point2D(test2)));
+    ConvexHullMonotoneChain(Point2D(test2)).print();
     cout << "Jarvis March" << endl;
-    printRegion2D(ConvexHullJarvisMarch(Point2D(test2)));
+    ConvexHullJarvisMarch(Point2D(test2)).print();
     cout << endl;
 
     return 0;

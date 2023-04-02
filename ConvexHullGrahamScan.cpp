@@ -11,9 +11,9 @@
 // returns 2 for the origin, and between 1 and -1 (inclusive) for all others.
 Number angleFactor(SimplePoint2D sp)
 {
-    if (sp.x == ZERO && sp.y == ZERO)
+    if (sp.x == Number("0") && sp.y == Number("0"))
         return Number("2");     // the origin is always first
-    return sign(sp.x) * (square(sp.x) / (square(sp.x) + square(sp.y)));
+    return sp.x.sign() * (sp.x.square() / (sp.x.square() + sp.y.square()));
 }
 
 // In an angular sweep counter-clockwise from the positive x axis to the negative
@@ -26,11 +26,12 @@ bool angularCompareFunc(SimplePoint2D p1, SimplePoint2D p2)
 
     Number a1 = angleFactor(p1);
     Number a2 = angleFactor(p2);
+    SimplePoint2D origin = SimplePoint2D(Number("0"), Number("0"));\
 
     if (a1 != a2)
         return a1 > a2;
     else
-        return distSquared(ORIGIN, p1) > distSquared(ORIGIN, p2);
+        return distSquared(origin, p1) > distSquared(origin, p2);
 }
 
 // https://en.wikipedia.org/wiki/Graham_scan
