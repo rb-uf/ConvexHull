@@ -44,11 +44,10 @@ void runTestAndTime(Point2D p)
     cout << "GrahamScan runtime:    " << t1 << endl;
     cout << "MonotoneChain runtime: " << t2 << endl;
     cout << "JarvisMarch runtime:   " << t3 << endl;
-
-    if (!(r1 == r2 && r2 == r3))
-        cout << "Convex hull outputs do not match." << endl;
-    else
-        cout << "Convex hull outputs match." << endl;
+    cout << endl;
+    cout << "GrahamScan and MonotoneChain output " << (r1 == r2 ? "matches." : "doesn't match.") << endl;
+    cout << "GrahamScan and JarvisMarch output " << (r1 == r3 ? "matches." : "doesn't match.") << endl;
+    cout << "JarvisMarch and MonotoneChain output " << (r3 == r2 ? "matches." : "doesn't match.") << endl;
 }
 
 int main()
