@@ -41,14 +41,14 @@ void runTestAndTime(Point2D p)
     stop = getTime();
     t3 = stop - start;
 
-    if (!(r1 == r2 && r2 == r3)) {
+    cout << "GrahamScan runtime:    " << t1 << endl;
+    cout << "MonotoneChain runtime: " << t2 << endl;
+    cout << "JarvisMarch runtime:   " << t3 << endl;
+
+    if (!(r1 == r2 && r2 == r3))
         cout << "Convex hull outputs do not match." << endl;
-    } else {
+    else
         cout << "Convex hull outputs match." << endl;
-        cout << "    GrahamScan runtime:    " << t1 << endl;
-        cout << "    MonotoneChain runtime: " << t2 << endl;
-        cout << "    JarvisMarch runtime:   " << t3 << endl;
-    }
 }
 
 int main()
