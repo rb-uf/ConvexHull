@@ -36,30 +36,32 @@ double getTime()
 
 void runTestAndTime(vector<SimplePoint2D> p)
 {
-    double start, stop, t1, t2, t3;
+    double start, stop;
 
     start = getTime();
     Region2D r1 = ConvexHullGrahamScan(Point2D(p, true, false));
     stop = getTime();
-    t1 = stop - start;
+    cout << "GrahamScan runtime: " << (stop - start) << endl;
 
     start = getTime();
     Region2D r2 = ConvexHullMonotoneChain(Point2D(p, true, false));
     stop = getTime();
-    t2 = stop - start;
+    cout << "MonotoneChain runtime: " << (stop - start) << endl;
 
     start = getTime();
     Region2D r3 = ConvexHullJarvisMarch(Point2D(p, true, false));
     stop = getTime();
-    t3 = stop - start;
+    cout << "JarvisMarch runtime: " << (stop - start) << endl;
 
-    cout << "GrahamScan runtime:    " << t1 << endl;
-    cout << "MonotoneChain runtime: " << t2 << endl;
-    cout << "JarvisMarch runtime:   " << t3 << endl;
+    start = getTime();
+    Region2D r4 = ConvexHullDivideandConquer(Point2D(p, true, false));
+    stop = getTime();
+    cout << "DivideandConquer runtime: " << (stop - start) << endl;
+
     cout << endl;
     cout << "GrahamScan and MonotoneChain output " << (r1 == r2 ? "matches." : "doesn't match.") << endl;
     cout << "GrahamScan and JarvisMarch output " << (r1 == r3 ? "matches." : "doesn't match.") << endl;
-    cout << "JarvisMarch and MonotoneChain output " << (r3 == r2 ? "matches." : "doesn't match.") << endl;
+    cout << "GrahamScan and DivideandConquer output " << (r1 == r4 ? "matches." : "doesn't match.") << endl;
 }
 
 int main()

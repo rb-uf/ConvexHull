@@ -121,6 +121,7 @@ vector<SimplePoint2D> merge(vector<SimplePoint2D> hullA, vector<SimplePoint2D> h
 
 vector<SimplePoint2D> internalRecursion(vector<SimplePoint2D> pointset)
 {
+    cout << "DEBUG" << endl;
     if(pointset.size() <= 5){
         return internalComputeHull(pointset);
     }
@@ -135,6 +136,7 @@ Region2D ConvexHullDivideandConquer(Point2D pointset)
 {
     pointset.sort();
 
+    cout << "DEBUG 1" << endl;
     vector<SimplePoint2D> points;
     for(Point2D::Iterator iter = pointset.begin(); iter != pointset.end(); iter++)
     {
@@ -142,6 +144,7 @@ Region2D ConvexHullDivideandConquer(Point2D pointset)
 
     }
 
+    cout << "DEBUG 2" << endl;
     if(points.size() < 3)
     {
         cout<<"Not enough points for hull"<<endl;
@@ -149,15 +152,17 @@ Region2D ConvexHullDivideandConquer(Point2D pointset)
     }
 
     vector<SimplePoint2D> hull;
+    cout << "DEBUG 3" << endl;
 
     hull = internalRecursion(points);
-/*
+
     for(int k=0; k<hull.size(); k++){
        cout<<"("<<hull[k].x<<", "<<hull[k].y<<")"<<endl;
     }
-*/
+
     vector<Segment2D> hullSegments;
 
+    cout << "DEBUG 4" << endl;
     for(int n=0; n<hull.size(); n++){
         if(n == hull.size()-1){
             hullSegments.push_back(Segment2D(hull[n],hull[0]));
@@ -168,6 +173,7 @@ Region2D ConvexHullDivideandConquer(Point2D pointset)
         }
 
     }
+    cout << "DEBUG 5" << endl;
 
     return Region2D(hullSegments);
 }
