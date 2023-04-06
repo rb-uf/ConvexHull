@@ -4,7 +4,11 @@
 #include <iostream>
 using namespace std;
 
-
+Number orientation(SimplePoint2D p, SimplePoint2D q, SimplePoint2D r)
+{
+    Number turn = (q.y - p.y) * (r.x -q.x) - (q.x - p.x) * (r.y - q.y);
+    return turn;
+}
 
 vector<SimplePoint2D> internalComputeHull(vector<SimplePoint2D> points)
 {
@@ -130,6 +134,8 @@ vector<SimplePoint2D> internalRecursion(vector<SimplePoint2D> pointset)
 
 Region2D ConvexHullDivideandConquer(Point2D pointset)
 {
+    pointset.sort();
+
     vector<SimplePoint2D> points;
     for(Point2D::Iterator iter = pointset.begin(); iter != pointset.end(); iter++)
     {
@@ -144,16 +150,8 @@ Region2D ConvexHullDivideandConquer(Point2D pointset)
     }
 
     vector<SimplePoint2D> hull;
-    if(pointset.isOrdered())
-    {
 
-        hull = internalRecursion(points);   
-    }
-    else
-    {
-        sort(points.begin(),points.end());
-        hull = internalRecursion(points);
-    }
+    hull = internalRecursion(points);
 
     for(int k=0; k<hull.size(); k++){
        cout<<"("<<hull[k].x<<", "<<hull[k].y<<")"<<endl;
