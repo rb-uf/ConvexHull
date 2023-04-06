@@ -34,7 +34,6 @@ vector<SimplePoint2D> internalComputeHull(vector<SimplePoint2D> points)
             {
                 q = j;
             }
-            
         }
         p = q;
         if(p == left)
@@ -80,7 +79,7 @@ vector<SimplePoint2D> merge(vector<SimplePoint2D> hullA, vector<SimplePoint2D> h
             done = true;
         }
     }
-    
+
     done = false;
     while(!done)
     {
@@ -99,7 +98,7 @@ vector<SimplePoint2D> merge(vector<SimplePoint2D> hullA, vector<SimplePoint2D> h
             done = true;
         }
     }
-    
+
 
     vector<SimplePoint2D> hull;
     for(int j=0; j<=a_uppertangent; j++)
@@ -129,7 +128,7 @@ vector<SimplePoint2D> internalRecursion(vector<SimplePoint2D> pointset)
     int med = pointset.size() / 2;
     vector<SimplePoint2D> A(&pointset[0],&pointset[med]);
     vector<SimplePoint2D> B(&pointset[med],&pointset[pointset.size()]);
-    return merge(internalRecursion(A),internalRecursion(B));                                                                                                                                       
+    return merge(internalRecursion(A),internalRecursion(B));
 }
 
 Region2D ConvexHullDivideandConquer(Point2D pointset)
@@ -152,11 +151,11 @@ Region2D ConvexHullDivideandConquer(Point2D pointset)
     vector<SimplePoint2D> hull;
 
     hull = internalRecursion(points);
-
+/*
     for(int k=0; k<hull.size(); k++){
        cout<<"("<<hull[k].x<<", "<<hull[k].y<<")"<<endl;
     }
-
+*/
     vector<Segment2D> hullSegments;
 
     for(int n=0; n<hull.size(); n++){
@@ -167,9 +166,8 @@ Region2D ConvexHullDivideandConquer(Point2D pointset)
         {
             hullSegments.push_back(Segment2D(hull[n],hull[n+1]));
         }
-        
+
     }
 
     return Region2D(hullSegments);
-
 }

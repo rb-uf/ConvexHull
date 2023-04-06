@@ -3,17 +3,29 @@
 #include "ConvexHullGrahamScan.h"
 #include "ConvexHullJarvisMarch.h"
 #include "ConvexHullMonotoneChain.h"
+#include "ConvexHullDivideandConquer.h"
 #include "TestCases.h"
 #include "Utilities.h"
 
-void runTestAndPrint(Point2D p)
+vector<SimplePoint2D> randomVectorSimplePoint2D(long count, int minX, int maxX, int minY, int maxY)
+{
+    generateSeed();
+    std::vector<SimplePoint2D> points;
+    for (long i = 0; i < count; i++)
+        points.push_back(randomSimplePoint2D(minX, maxX, minY, maxY));
+    return points;
+}
+
+void runTestAndPrint(vector<SimplePoint2D> p)
 {
     cout << "Graham Scan" << endl;
-    ConvexHullGrahamScan(p).print();
+    ConvexHullGrahamScan(Point2D(p, true, false)).print();
     cout << "Monotone Chain" << endl;
-    ConvexHullMonotoneChain(p).print();
+    ConvexHullMonotoneChain(Point2D(p, true, false)).print();
     cout << "Jarvis March" << endl;
-    ConvexHullJarvisMarch(p).print();
+    ConvexHullJarvisMarch(Point2D(p, true, false)).print();
+    cout << "Divide and Conquer" << endl;
+    ConvexHullDivideandConquer(Point2D(p, true, false)).print();
 }
 
 double getTime()
@@ -22,22 +34,22 @@ double getTime()
     return std::chrono::duration<double>(t.time_since_epoch()).count();
 }
 
-void runTestAndTime(Point2D p)
+void runTestAndTime(vector<SimplePoint2D> p)
 {
     double start, stop, t1, t2, t3;
 
     start = getTime();
-    Region2D r1 = ConvexHullGrahamScan(p);
+    Region2D r1 = ConvexHullGrahamScan(Point2D(p, true, false));
     stop = getTime();
     t1 = stop - start;
 
     start = getTime();
-    Region2D r2 = ConvexHullMonotoneChain(p);
+    Region2D r2 = ConvexHullMonotoneChain(Point2D(p, true, false));
     stop = getTime();
     t2 = stop - start;
 
     start = getTime();
-    Region2D r3 = ConvexHullJarvisMarch(p);
+    Region2D r3 = ConvexHullJarvisMarch(Point2D(p, true, false));
     stop = getTime();
     t3 = stop - start;
 
@@ -53,23 +65,23 @@ void runTestAndTime(Point2D p)
 int main()
 {
     cout << "-------- test1 --------" << endl;
-    runTestAndPrint(Point2D(test1));
+    runTestAndPrint(test1);
     cout << endl;
 
     cout << "-------- test2 --------" << endl;
-    runTestAndPrint(Point2D(test2));
+    runTestAndPrint(test2);
     cout << endl;
 
     cout << "-------- test3: 100 points --------" << endl;
-    runTestAndTime(randomPoint2D(100, 0, 500, 0, 500));
+    runTestAndTime(randomVectorSimplePoint2D(100, 0, 500, 0, 500));
     cout << endl;
 
     cout << "-------- test4: 500 points --------" << endl;
-    runTestAndTime(randomPoint2D(500, 0, 500, 0, 500));
+    runTestAndTime(randomVectorSimplePoint2D(500, 0, 500, 0, 500));
     cout << endl;
 
     cout << "-------- test5: 1000 points --------" << endl;
-    runTestAndTime(randomPoint2D(1000, 0, 500, 0, 500));
+    runTestAndTime(randomVectorSimplePoint2D(1000, 0, 500, 0, 500));
     cout << endl;
 
     return 0;

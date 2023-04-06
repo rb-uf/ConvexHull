@@ -10,6 +10,7 @@
 
 Region2D ConvexHullMonotoneChain(Point2D Point2D_points)
 {
+    Point2D_points.sort();
     std::vector<SimplePoint2D> points = Point2DToVector(Point2D_points);
 
     if (points.size() <= 3)
