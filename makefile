@@ -4,12 +4,14 @@ all:
 		ConvexHullJarvisMarch.cpp \
 		ConvexHullMonotoneChain.cpp \
 		ConvexHullDivideandConquer.cpp \
+		ConvexHullIncremental.cpp \
 		Utilities.cpp \
 		main.cpp
 	g++ ConvexHullGrahamScan.o \
 		ConvexHullJarvisMarch.o \
 		ConvexHullMonotoneChain.o \
 		ConvexHullDivideandConquer.o \
+		ConvexHullIncremental.o \
 		Utilities.o \
 		main.o \
 		../GeometricDataStructures2D/libGeometricDataStructures2D.a \

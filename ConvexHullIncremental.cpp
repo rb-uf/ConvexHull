@@ -1,6 +1,7 @@
 #include "ConvexHullIncremental.h"
 #include "ConvexHullDivideandConquer.h"
 #include "ConvexHullJarvisMarch.h"
+#include "Utilities.h"
 #include <iostream>
 #include <algorithm>
 
@@ -62,17 +63,13 @@ vector<SimplePoint2D> simpleHull(vector<SimplePoint2D> points)
 
 Region2D ConvexHullIncremental(Point2D pointset)
 {
+    pointset.sort();
+
     vector<SimplePoint2D> points;
     for(Point2D::Iterator itr = pointset.begin(); itr != pointset.end(); itr++)
     {
         points.push_back(*itr);
     }
-
-    if(!pointset.isOrdered())
-    {
-        sort(points.begin(),points.end());
-    }
-
 
     vector<SimplePoint2D> hull;
 
@@ -131,11 +128,11 @@ Region2D ConvexHullIncremental(Point2D pointset)
         hull = tmpHull;
         
     }
-
+/*
     for(int k=0; k<hull.size(); k++){
         cout<<"("<<hull[k].x<<", "<<hull[k].y<<")"<<" ";
     }
     cout<<endl;
-
+*/
     return pointsToRegion(hull);
 }

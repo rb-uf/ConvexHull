@@ -1,14 +1,9 @@
 #include "ConvexHullDivideandConquer.h"
 #include "ConvexHullJarvisMarch.h"
+#include "Utilities.h"
 #include <algorithm>
 #include <iostream>
 using namespace std;
-
-Number orientation(SimplePoint2D p, SimplePoint2D q, SimplePoint2D r)
-{
-    Number turn = (q.y - p.y) * (r.x -q.x) - (q.x - p.x) * (r.y - q.y);
-    return turn;
-}
 
 vector<SimplePoint2D> internalComputeHull(vector<SimplePoint2D> points)
 {

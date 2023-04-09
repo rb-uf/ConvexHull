@@ -1,4 +1,5 @@
 #include <iostream>
+#include <chrono>
 #include "Utilities.h"
 
 Number distSquared(SimplePoint2D a, SimplePoint2D b)
@@ -18,16 +19,10 @@ std::vector<SimplePoint2D> Point2DToVector(Point2D Point2D_points)
     return points;
 }
 
-// Returns True if these three points make a counter-clockwise turn, False if clockwise or colinear.
+// Returns True if these three points make a counter-clockwise turn, False if clockwise or collinear.
 bool isCounterClockwiseTurn(SimplePoint2D p1, SimplePoint2D p2, SimplePoint2D p3)
 {
-    Number v1_x = p2.x - p1.x;
-    Number v1_y = p2.y - p1.y;
-    Number v2_x = p3.x - p2.x;
-    Number v2_y = p3.y - p2.y;
-
-    Number cross_product_z = (v1_x * v2_y) - (v1_y * v2_x);
-    return cross_product_z > Number("0");
+    return crossProduct(p1, p2, p3) > Number("0");
 }
 
 // Converts an vector of SimplePoint2D into a vector of Segment2Ds.
@@ -44,4 +39,40 @@ std::vector<Segment2D> pointsToSegments(std::vector<SimplePoint2D> points)
         segments.push_back(Segment2D(points.front(), points.back()));
 
     return segments;
+}
+
+Number orientation(SimplePoint2D p, SimplePoint2D q, SimplePoint2D r)
+{
+    Number turn = (q.y - p.y) * (r.x -q.x) - (q.x - p.x) * (r.y - q.y);
+    return turn;
+}
+
+bool areCollinear(SimplePoint2D p1, SimplePoint2D p2, SimplePoint2D p3)
+{
+    return crossProduct(p1, p2, p3) == Number("0");
+}
+
+Number crossProduct(SimplePoint2D p1, SimplePoint2D p2, SimplePoint2D p3)
+{
+    Number v1_x = p2.x - p1.x;
+    Number v1_y = p2.y - p1.y;
+    Number v2_x = p3.x - p2.x;
+    Number v2_y = p3.y - p2.y;
+
+    return (v1_x * v2_y) - (v1_y * v2_x);
+}
+
+double getTime()
+{
+    auto t = std::chrono::high_resolution_clock::now();
+    return std::chrono::duration<double>(t.time_since_epoch()).count();
+}
+
+vector<SimplePoint2D> randomVectorSimplePoint2D(long count, int minX, int maxX, int minY, int maxY)
+{
+    generateSeed();
+    std::vector<SimplePoint2D> points;
+    for (long i = 0; i < count; i++)
+        points.push_back(randomSimplePoint2D(minX, maxX, minY, maxY));
+    return points;
 }

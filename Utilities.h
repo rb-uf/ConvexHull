@@ -12,3 +12,9 @@ std::vector<SimplePoint2D> Point2DToVector(Point2D Point2D_points);
 bool isCounterClockwiseTurn(SimplePoint2D p1, SimplePoint2D p2, SimplePoint2D p3);
 
 std::vector<Segment2D> pointsToSegments(std::vector<SimplePoint2D> points);
+Number orientation(SimplePoint2D p, SimplePoint2D q, SimplePoint2D r);
+Number crossProduct(SimplePoint2D p1, SimplePoint2D p2, SimplePoint2D p3);
+bool areCollinear(SimplePoint2D p1, SimplePoint2D p2, SimplePoint2D p3);
+
+double getTime();
+vector<SimplePoint2D> randomVectorSimplePoint2D(long count, int minX, int maxX, int minY, int maxY);
