@@ -2,33 +2,31 @@
 #include <chrono>
 #include "Utilities.h"
 
-Number distSquared(SimplePoint2D a, SimplePoint2D b)
+static Number zero = Number();
+
+Number distSquared(const SimplePoint2D& a, const SimplePoint2D& b)
 {
     return (a.x - b.x).square() + (a.y - b.y).square();
 }
 
-SimplePoint2D relativeCoord(SimplePoint2D origin, SimplePoint2D p)
+SimplePoint2D relativeCoord(const SimplePoint2D& origin, const SimplePoint2D& p)
 {
     return SimplePoint2D(p.x - origin.x, p.y - origin.y);
 }
-std::vector<SimplePoint2D> Point2DToVector(Point2D Point2D_points)
+
+std::vector<SimplePoint2D> Point2DToVector(const Point2D& p2D)
 {
     std::vector<SimplePoint2D> points;
-    for (SimplePoint2D p : Point2D_points)
+    for (SimplePoint2D p : p2D)
         points.push_back(p);
     return points;
 }
 
-// Returns True if these three points make a counter-clockwise turn, False if clockwise or collinear.
-bool isCounterClockwiseTurn(SimplePoint2D p1, SimplePoint2D p2, SimplePoint2D p3)
-{
-    return crossProduct(p1, p2, p3) > Number("0");
-}
 
 // Converts an vector of SimplePoint2D into a vector of Segment2Ds.
 // Segments connect one point to the next, according to the ordering of the points.
 // If the first and last point are not equal, a segment will be drawn between them as well.
-std::vector<Segment2D> pointsToSegments(std::vector<SimplePoint2D> points)
+std::vector<Segment2D> pointsToSegments(const std::vector<SimplePoint2D>& points)
 {
     std::vector<Segment2D> segments;
 
@@ -41,25 +39,19 @@ std::vector<Segment2D> pointsToSegments(std::vector<SimplePoint2D> points)
     return segments;
 }
 
-Number orientation(SimplePoint2D p, SimplePoint2D q, SimplePoint2D r)
+
+/* orientation: based on cross-products */
+Number orientation(const SimplePoint2D& p, const SimplePoint2D& q, const SimplePoint2D& r)
 {
-    Number turn = (q.y - p.y) * (r.x -q.x) - (q.x - p.x) * (r.y - q.y);
-    return turn;
+    return (q.x - p.x) * (r.y - q.y) - (r.x - q.x) * (q.y - p.y);
 }
-
-bool areCollinear(SimplePoint2D p1, SimplePoint2D p2, SimplePoint2D p3)
+bool isCounterClockwiseTurn(const SimplePoint2D& p, const SimplePoint2D& q, const SimplePoint2D& r)
 {
-    return crossProduct(p1, p2, p3) == Number("0");
+    return orientation(p, q, r) > zero;
 }
-
-Number crossProduct(SimplePoint2D p1, SimplePoint2D p2, SimplePoint2D p3)
+bool areCollinear(const SimplePoint2D& p, const SimplePoint2D& q, const SimplePoint2D& r)
 {
-    Number v1_x = p2.x - p1.x;
-    Number v1_y = p2.y - p1.y;
-    Number v2_x = p3.x - p2.x;
-    Number v2_y = p3.y - p2.y;
-
-    return (v1_x * v2_y) - (v1_y * v2_x);
+    return orientation(p, q, r) == zero;
 }
 
 double getTime()

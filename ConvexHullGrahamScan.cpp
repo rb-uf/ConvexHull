@@ -1,58 +1,48 @@
 #include <vector>
 #include <algorithm>
-#include <iostream>
 #include "Number.h"
 #include "SimplePoint2D.h"
 #include "Segment2D.h"
-#include "Region2D.h"
 #include "Point2D.h"
+#include "Region2D.h"
 #include "Utilities.h"
 
-// returns 2 for the origin, and between 1 and -1 (inclusive) for all others.
-Number angleFactor(SimplePoint2D sp)
+// Returns between 1 and -1 (inclusive) for the polar angle of the point.
+// sp must not be the origin.
+Number angleFactor(const SimplePoint2D& sp)
 {
-    if (sp.x == Number("0") && sp.y == Number("0"))
-        return Number("2");     // the origin is always first
     return sp.x.sign() * (sp.x.square() / (sp.x.square() + sp.y.square()));
 }
 
-// In an angular sweep counter-clockwise from the positive x axis to the negative
-// x axis, if p1 is encountered before p2, return true. Otherwise, false.
-// Calculated relative to an origin at (0, 0).
-bool angularCompareFunc(SimplePoint2D p1, SimplePoint2D p2)
-{
-    // Note: p1 and p2 can be treated as position vectors
-    // Inspiration: https://en.wikipedia.org/wiki/Cosine_similarity
-
-    Number a1 = angleFactor(p1);
-    Number a2 = angleFactor(p2);
-    SimplePoint2D origin = SimplePoint2D(Number("0"), Number("0"));\
-
-    if (a1 != a2)
-        return a1 > a2;
-    else
-        return distSquared(origin, p1) > distSquared(origin, p2);
-}
-
 // https://en.wikipedia.org/wiki/Graham_scan
-Region2D ConvexHullGrahamScan(Point2D Point2D_points)
+Region2D ConvexHullGrahamScan(const Point2D& p2D)
 {
-    std::vector<SimplePoint2D> points = Point2DToVector(Point2D_points);
+    if (p2D.count() < 3)
+        return Region2D();
 
-    if (points.size() <= 3)
-        return pointsToSegments(points);
+    std::vector<SimplePoint2D> points = Point2DToVector(p2D);
 
-    // Let p0 be the point with the lowest y-coord and lowest x-coord (in that order)
+    /* Let p0 be the point with the lowest y-coord and lowest x-coord (in that order) */
     SimplePoint2D p0 = points[0];
-    for (SimplePoint2D p : points) {
+    for (SimplePoint2D p : points)
         if ((p.y < p0.y) || (p.y == p0.y && p.x < p0.x))
             p0 = p;
-    }
 
-    // This is a lambda expression. It will be used by std::sort to order the points.
-    // A lambda function is needed here because the ordering is dependent on p0.
-    auto comp = [p0](SimplePoint2D p1, SimplePoint2D p2) {
-        return angularCompareFunc(relativeCoord(p0, p1), relativeCoord(p0, p2));
+    /* A lambda function that compares the angles of p1 and p2 relative to p0. */
+    SimplePoint2D origin = SimplePoint2D(Number("0"), Number("0"));
+    auto comp = [&p0, &origin](SimplePoint2D p1, SimplePoint2D p2) {
+        if (p0 == p1)
+            return true;
+        else if (p0 == p2)
+            return false;
+
+        Number a1 = angleFactor(relativeCoord(p0, p1));
+        Number a2 = angleFactor(relativeCoord(p0, p2));
+
+        if (a1 != a2)
+            return a1 > a2;
+        else
+            return distSquared(origin, p1) > distSquared(origin, p2);
     };
 
     // Sort points by polar angle with p0

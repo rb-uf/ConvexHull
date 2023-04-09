@@ -17,3 +17,6 @@ all:
 		../GeometricDataStructures2D/libGeometricDataStructures2D.a \
 		-lgmp -lgmpxx \
 		-o test
+
+clean:
+	rm *.o
