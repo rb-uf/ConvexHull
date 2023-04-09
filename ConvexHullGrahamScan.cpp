@@ -11,7 +11,8 @@
 // sp must not be the origin.
 Number angleFactor(const SimplePoint2D& sp)
 {
-    return sp.x.sign() * (sp.x.square() / (sp.x.square() + sp.y.square()));
+    Number x_sq = sp.x.square();
+    return sp.x.sign() * (x_sq / (x_sq + sp.y.square()));
 }
 
 // https://en.wikipedia.org/wiki/Graham_scan
