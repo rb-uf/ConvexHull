@@ -66,11 +66,9 @@ vsp findHull(const vsp& _points,
     if (points.size() == 0)
         return vsp();
     SimplePoint2D farPoint = findFarthestPoint(points, a, b);
-    vsp h1 = findHull(points, a, farPoint);
-    vsp h2 = findHull(points, farPoint, b);
-    vsp h3 = mergeHulls(h1, farPoint,
-                      h2);
-    return h3;
+    return mergeHulls(findHull(points, a, farPoint),
+                      farPoint,
+                      findHull(points, farPoint, b));
 }
 
 Region2D ConvexHullQuickhull(const Point2D& p2D)
@@ -89,10 +87,10 @@ Region2D ConvexHullQuickhull(const Point2D& p2D)
             maxPoint = p;
     }
 
-    vsp h3 = mergeHulls(findHull(points, minPoint, maxPoint),
-                        maxPoint,
-                        findHull(points, maxPoint, minPoint));
-    h3.insert(h3.end(), minPoint);
-    return Region2D(pointsToSegments(h3));
+    vsp hull = mergeHulls(findHull(points, minPoint, maxPoint),
+                          maxPoint,
+                          findHull(points, maxPoint, minPoint));
+    hull.insert(hull.end(), minPoint);
+    return Region2D(pointsToSegments(hull));
 }
 
