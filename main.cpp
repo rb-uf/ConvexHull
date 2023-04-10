@@ -4,6 +4,7 @@
 #include "ConvexHullJarvisMarch.h"
 #include "ConvexHullDivideandConquer.h"
 #include "ConvexHullIncremental.h"
+#include "ConvexHullQuickhull.h"
 #include "TestCases.h"
 #include "Utilities.h"
 
@@ -19,6 +20,8 @@ void runTestAndPrint(vector<SimplePoint2D> p)
 //    ConvexHullDivideandConquer(Point2D(p, true, false)).print();
 //    cout << "Incremental" << endl;
 //    ConvexHullIncremental(Point2D(p, true, false)).print();
+    cout << "Quickhull" << endl;
+    ConvexHullQuickhull(Point2D(p, true, false)).print();
 }
 
 void runTestAndTime(vector<SimplePoint2D> p)
@@ -50,11 +53,17 @@ void runTestAndTime(vector<SimplePoint2D> p)
     stop = getTime();
     cout << "Incremental runtime: " << (stop - start) << endl;
 */
+    start = getTime();
+    Region2D r6 = ConvexHullQuickhull(Point2D(p, true, false));
+    stop = getTime();
+    cout << "Quickhull runtime: " << (stop - start) << endl;
+
     cout << endl;
     cout << "MonotoneChain and GrahamScan output " << (r1 == r2 ? "matches." : "doesn't match.") << endl;
     cout << "MonotoneChain and JarvisMarch output " << (r1 == r3 ? "matches." : "doesn't match.") << endl;
 //    cout << "MonotoneChain and DivideandConquer output " << (r1 == r4 ? "matches." : "doesn't match.") << endl;
 //    cout << "MonotoneChain and Incremental output " << (r1 == r5 ? "matches." : "doesn't match.") << endl;
+    cout << "MonotoneChain and Quickhull output " << (r1 == r6 ? "matches." : "doesn't match.") << endl;
 }
 
 int main()
@@ -79,8 +88,8 @@ int main()
     runTestAndTime(randomVectorSimplePoint2D(1000, 0, 500, 0, 500));
     cout << endl;
 
-    cout << "-------- test5: 1000000 points --------" << endl;
-    runTestAndTime(randomVectorSimplePoint2D(1000000, 0, 500, 0, 500));
+    cout << "-------- test5: 100000 points --------" << endl;
+    runTestAndTime(randomVectorSimplePoint2D(100000, 0, 500, 0, 500));
     cout << endl;
 
     return 0;

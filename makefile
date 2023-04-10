@@ -5,6 +5,7 @@ all:
 		ConvexHullMonotoneChain.cpp \
 		ConvexHullDivideandConquer.cpp \
 		ConvexHullIncremental.cpp \
+		ConvexHullQuickhull.cpp \
 		Utilities.cpp \
 		main.cpp
 	g++ ConvexHullGrahamScan.o \
@@ -12,6 +13,7 @@ all:
 		ConvexHullMonotoneChain.o \
 		ConvexHullDivideandConquer.o \
 		ConvexHullIncremental.o \
+		ConvexHullQuickhull.o \
 		Utilities.o \
 		main.o \
 		../GeometricDataStructures2D/libGeometricDataStructures2D.a \
