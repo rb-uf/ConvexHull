@@ -32,10 +32,10 @@ Region2D ConvexHullGrahamScan(const Point2D& p2D)
     /* A lambda function that compares the angles of p1 and p2 relative to p0. */
     SimplePoint2D origin = SimplePoint2D(Number("0"), Number("0"));
     auto comp = [&p0, &origin](SimplePoint2D p1, SimplePoint2D p2) {
+        if (p0 == p2)
+            return false;
         if (p0 == p1)
             return true;
-        else if (p0 == p2)
-            return false;
 
         Number a1 = angleFactor(relativeCoord(p0, p1));
         Number a2 = angleFactor(relativeCoord(p0, p2));
@@ -43,7 +43,7 @@ Region2D ConvexHullGrahamScan(const Point2D& p2D)
         if (a1 != a2)
             return a1 > a2;
         else
-            return distSquared(origin, p1) > distSquared(origin, p2);
+            return distSquared(origin, p1) < distSquared(origin, p2);
     };
 
     // Sort points by polar angle with p0

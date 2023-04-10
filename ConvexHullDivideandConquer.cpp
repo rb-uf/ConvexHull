@@ -6,42 +6,6 @@ using namespace std;
 
 static Number zero = Number("0");
 
-vector<SimplePoint2D> internalComputeHull(vector<SimplePoint2D> points)
-{
-    vector<SimplePoint2D> hull;
-    int left = 0;
-    for(int i = 1; i < points.size(); i++)
-    {
-        if(points[i].x <= points[left].x)
-        {
-            left = i;
-        }
-    }
-
-    int p = left;
-    int q = (p + 1) % points.size();
-    int finish = 0;
-    while(finish < 1)
-    {
-        hull.push_back(points[p]);
-        for(int j = 0; j < points.size(); j++)
-        {
-            if(orientation(points[p], points[j], points[q]) > zero)
-            {
-                q = j;
-            }
-        }
-        p = q;
-        if(p == left)
-        {
-            finish++;
-        }
-        q = (p + 1) % points.size();
-    }
-
-    return hull;
-}
-
 vector<SimplePoint2D> merge(vector<SimplePoint2D> hullA, vector<SimplePoint2D> hullB)
 {
     bool done = false;
@@ -108,7 +72,7 @@ vector<SimplePoint2D> merge(vector<SimplePoint2D> hullA, vector<SimplePoint2D> h
 vector<SimplePoint2D> internalRecursion(vector<SimplePoint2D> pointset)
 {
     if(pointset.size() <= 5){
-        return internalComputeHull(pointset);
+        return clockwiseHull(pointset);
     }
 
     int med = pointset.size() / 2;
@@ -136,7 +100,27 @@ Region2D ConvexHullDivideandConquer(Point2D pointset)
 
     vector<SimplePoint2D> hull;
 
-    hull = internalRecursion(points);
+    hull = internalRecursion(points);   
+
+    vector<int> colinear;
+    vector<SimplePoint2D> correctHull;
+    for(int m=0; m<hull.size()-2; m++){
+        if(orientation(hull[m],hull[m+1],hull[m+2]) == Number("0")){
+            colinear.push_back(m+1);
+        }
+    }
+    int t = 0;
+    for(int n=0; n<hull.size(); n++){
+        if(n == colinear[t]){
+            t++;
+        }
+        else{
+            correctHull.push_back(hull[n]);
+        }
+    }
+
+    hull = correctHull;
+
 /*
     for(int k=0; k<hull.size(); k++){
        cout<<"("<<hull[k].x<<", "<<hull[k].y<<")"<<endl;
