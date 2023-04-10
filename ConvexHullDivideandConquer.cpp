@@ -4,6 +4,8 @@
 #include <iostream>
 using namespace std;
 
+static Number zero = Number("0");
+
 vector<SimplePoint2D> internalComputeHull(vector<SimplePoint2D> points)
 {
     vector<SimplePoint2D> hull;
@@ -24,7 +26,7 @@ vector<SimplePoint2D> internalComputeHull(vector<SimplePoint2D> points)
         hull.push_back(points[p]);
         for(int j = 0; j < points.size(); j++)
         {
-            if(orientation(points[p], points[j], points[q]) > Number("0"))
+            if(orientation(points[p], points[j], points[q]) > zero)
             {
                 q = j;
             }
@@ -58,11 +60,11 @@ vector<SimplePoint2D> merge(vector<SimplePoint2D> hullA, vector<SimplePoint2D> h
     {
 
         done = true;
-        while(orientation(hullB[b_uppertangent],hullA[a_uppertangent],hullA[(a_uppertangent - 1 + hullA.size()) % hullA.size()]) >= Number("0"))
+        while(orientation(hullB[b_uppertangent],hullA[a_uppertangent],hullA[(a_uppertangent - 1 + hullA.size()) % hullA.size()]) >= zero)
         {
             a_uppertangent = (a_uppertangent - 1 + hullA.size()) % hullA.size();
         }
-        while(orientation(hullA[a_uppertangent],hullB[b_uppertangent],hullB[(b_uppertangent + 1) % hullB.size()]) <= Number("0"))
+        while(orientation(hullA[a_uppertangent],hullB[b_uppertangent],hullB[(b_uppertangent + 1) % hullB.size()]) <= zero)
         {
             b_uppertangent = (b_uppertangent + 1) % hullB.size();
             done = false;
@@ -72,11 +74,11 @@ vector<SimplePoint2D> merge(vector<SimplePoint2D> hullA, vector<SimplePoint2D> h
     while(!done)
     {
         done = true;
-        while(orientation(hullA[a_lowertangent],hullB[b_lowertangent],hullB[(b_lowertangent - 1 + hullB.size()) % hullB.size()]) >= Number("0"))
+        while(orientation(hullA[a_lowertangent],hullB[b_lowertangent],hullB[(b_lowertangent - 1 + hullB.size()) % hullB.size()]) >= zero)
         {
             b_lowertangent = (b_lowertangent - 1 + hullB.size()) % hullB.size();
         }
-        while(orientation(hullB[b_lowertangent],hullA[a_lowertangent],hullA[(a_lowertangent + 1) % hullA.size()]) <= Number("0"))
+        while(orientation(hullB[b_lowertangent],hullA[a_lowertangent],hullA[(a_lowertangent + 1) % hullA.size()]) <= zero)
         {
             a_lowertangent = (a_lowertangent + 1) % hullA.size();
             done = false;
@@ -105,7 +107,6 @@ vector<SimplePoint2D> merge(vector<SimplePoint2D> hullA, vector<SimplePoint2D> h
 
 vector<SimplePoint2D> internalRecursion(vector<SimplePoint2D> pointset)
 {
-    cout << "DEBUG" << endl;
     if(pointset.size() <= 5){
         return internalComputeHull(pointset);
     }
@@ -120,7 +121,6 @@ Region2D ConvexHullDivideandConquer(Point2D pointset)
 {
     pointset.sort();
 
-    cout << "DEBUG 1" << endl;
     vector<SimplePoint2D> points;
     for(Point2D::Iterator iter = pointset.begin(); iter != pointset.end(); iter++)
     {
@@ -128,7 +128,6 @@ Region2D ConvexHullDivideandConquer(Point2D pointset)
 
     }
 
-    cout << "DEBUG 2" << endl;
     if(points.size() < 3)
     {
         cout<<"Not enough points for hull"<<endl;
@@ -136,17 +135,15 @@ Region2D ConvexHullDivideandConquer(Point2D pointset)
     }
 
     vector<SimplePoint2D> hull;
-    cout << "DEBUG 3" << endl;
 
     hull = internalRecursion(points);
-
+/*
     for(int k=0; k<hull.size(); k++){
        cout<<"("<<hull[k].x<<", "<<hull[k].y<<")"<<endl;
     }
-
+*/
     vector<Segment2D> hullSegments;
 
-    cout << "DEBUG 4" << endl;
     for(int n=0; n<hull.size(); n++){
         if(n == hull.size()-1){
             hullSegments.push_back(Segment2D(hull[n],hull[0]));
@@ -157,7 +154,6 @@ Region2D ConvexHullDivideandConquer(Point2D pointset)
         }
 
     }
-    cout << "DEBUG 5" << endl;
 
     return Region2D(hullSegments);
 }

@@ -9,7 +9,7 @@ Number distSquared(const SimplePoint2D& a, const SimplePoint2D& b)
     return (a.x - b.x).square() + (a.y - b.y).square();
 }
 
-SimplePoint2D relativeCoord(SimplePoint2D origin, SimplePoint2D p)
+SimplePoint2D relativeCoord(const SimplePoint2D& origin, const SimplePoint2D& p)
 {
     return SimplePoint2D(p.x - origin.x, p.y - origin.y);
 }

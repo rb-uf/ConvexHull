@@ -3,6 +3,8 @@
 #include <iostream>
 #include <algorithm>
 
+static Number zero = Number("0");
+
 Region2D pointsToRegion(vector<SimplePoint2D> points)
 {
     vector<Segment2D> edges;
@@ -33,14 +35,9 @@ Region2D ConvexHullIncremental(Point2D pointset)
         points.push_back(*itr);
     }
 
-    if(!pointset.isOrdered())
-    {
-        sort(points.begin(),points.end());
-    }
-
-    for(int i=0; i<points.size(); i++){
+//    for(int i=0; i<points.size(); i++){
         //cout<<"("<<points[i].x<<", "<<points[i].y<<")"<<endl;
-    }
+//    }
 
 
     vector<SimplePoint2D> hull;
@@ -79,13 +76,13 @@ Region2D ConvexHullIncremental(Point2D pointset)
         upperTangent = (upperTangent+1)%hull.size();
         lowerTangent = upperTangent;
         //cout<<"Upper Tangent: ";
-        while(orientation(points[j],hull[upperTangent],hull[(upperTangent-1+hull.size())%hull.size()]) >= Number("0"))
+        while(orientation(points[j],hull[upperTangent],hull[(upperTangent-1+hull.size())%hull.size()]) >= zero)
         {
             upperTangent = (upperTangent-1+hull.size())%hull.size();
         }
         //cout<<hull[upperTangent].x<<" "<<hull[upperTangent].y<<endl;
         //cout<<"Lower Tangent: ";
-        while(orientation(points[j],hull[lowerTangent],hull[(lowerTangent+1)%hull.size()]) <= Number("0"))
+        while(orientation(points[j],hull[lowerTangent],hull[(lowerTangent+1)%hull.size()]) <= zero)
         {
             lowerTangent = (lowerTangent+1)%hull.size();
         }
