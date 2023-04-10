@@ -9,6 +9,8 @@ Number distSquared(SimplePoint2D a, SimplePoint2D b);
 SimplePoint2D relativeCoord(SimplePoint2D origin, SimplePoint2D p);
 std::vector<SimplePoint2D> Point2DToVector(Point2D Point2D_points);
 
+Number orientation(SimplePoint2D p, SimplePoint2D q, SimplePoint2D r);
+
 bool isCounterClockwiseTurn(SimplePoint2D p1, SimplePoint2D p2, SimplePoint2D p3);
 
 std::vector<Segment2D> pointsToSegments(std::vector<SimplePoint2D> points);
