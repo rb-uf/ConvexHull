@@ -9,9 +9,46 @@ Number distSquared(const SimplePoint2D& a, const SimplePoint2D& b)
     return (a.x - b.x).square() + (a.y - b.y).square();
 }
 
-SimplePoint2D relativeCoord(const SimplePoint2D& origin, const SimplePoint2D& p)
+SimplePoint2D relativeCoord(SimplePoint2D origin, SimplePoint2D p)
 {
     return SimplePoint2D(p.x - origin.x, p.y - origin.y);
+}
+
+vector<SimplePoint2D> clockwiseHull(vector<SimplePoint2D> points)
+{
+    vector<SimplePoint2D> hull;
+    int left = 0;
+    for(int i = 1; i < points.size(); i++)
+    {
+        if(points[i].x <= points[left].x)
+        {
+            left = i;
+        }
+    }
+
+    int p = left;
+    int q = (p + 1) % points.size();
+    int finish = 0;
+    while(finish < 1)
+    {
+        hull.push_back(points[p]);
+        for(int j = 0; j < points.size(); j++)
+        {
+            if(orientation(points[p], points[j], points[q]) > Number("0"))
+            {
+                q = j;
+            }
+            
+        }
+        p = q;
+        if(p == left)
+        {
+            finish++;
+        }
+        q = (p + 1) % points.size();
+    }
+
+    return hull;
 }
 
 std::vector<SimplePoint2D> Point2DToVector(const Point2D& p2D)

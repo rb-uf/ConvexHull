@@ -1,5 +1,4 @@
 #include "ConvexHullDivideandConquer.h"
-#include "ConvexHullJarvisMarch.h"
 #include "Utilities.h"
 #include <algorithm>
 #include <iostream>
@@ -55,55 +54,45 @@ vector<SimplePoint2D> merge(vector<SimplePoint2D> hullA, vector<SimplePoint2D> h
     int b_uppertangent = 0;
     int b_lowertangent = 0;
 
-    int prev_a;
-    int prev_b;
     while(!done)
     {
-        prev_a = a_uppertangent;
-        prev_b = b_uppertangent;
-        while(orientation(hullB[b_uppertangent],hullA[a_uppertangent],hullA[(a_uppertangent - 1) % hullA.size()]) >= Number("0"))
+
+        done = true;
+        while(orientation(hullB[b_uppertangent],hullA[a_uppertangent],hullA[(a_uppertangent - 1 + hullA.size()) % hullA.size()]) >= Number("0"))
         {
-            a_uppertangent = (a_uppertangent - 1) % hullA.size();
+            a_uppertangent = (a_uppertangent - 1 + hullA.size()) % hullA.size();
         }
         while(orientation(hullA[a_uppertangent],hullB[b_uppertangent],hullB[(b_uppertangent + 1) % hullB.size()]) <= Number("0"))
         {
             b_uppertangent = (b_uppertangent + 1) % hullB.size();
-        }
-        if(prev_a == a_uppertangent && prev_b == b_uppertangent)
-        {
-            done = true;
+            done = false;
         }
     }
-
     done = false;
     while(!done)
     {
-        prev_a = a_lowertangent;
-        prev_b = b_lowertangent;
+        done = true;
+        while(orientation(hullA[a_lowertangent],hullB[b_lowertangent],hullB[(b_lowertangent - 1 + hullB.size()) % hullB.size()]) >= Number("0"))
+        {
+            b_lowertangent = (b_lowertangent - 1 + hullB.size()) % hullB.size();
+        }
         while(orientation(hullB[b_lowertangent],hullA[a_lowertangent],hullA[(a_lowertangent + 1) % hullA.size()]) <= Number("0"))
         {
             a_lowertangent = (a_lowertangent + 1) % hullA.size();
-        }
-        while(orientation(hullA[a_lowertangent],hullB[b_lowertangent],hullB[(b_lowertangent - 1) % hullB.size()]) >= Number("0"))
-        {
-            b_lowertangent = (b_lowertangent - 1) % hullB.size();
-        }
-        if(prev_a == a_lowertangent && prev_b == b_lowertangent)
-        {
-            done = true;
+            done = false;
         }
     }
-
 
     vector<SimplePoint2D> hull;
     for(int j=0; j<=a_uppertangent; j++)
     {
         hull.push_back(hullA[j]);
     }
-    for(int k=b_uppertangent; k<=b_lowertangent; k++)
+    for(int k=b_uppertangent; k%hullB.size()!=b_lowertangent; k++)
     {
-        hull.push_back(hullB[k]);
+        hull.push_back(hullB[k%hullB.size()]);
     }
+    hull.push_back(hullB[b_lowertangent]);
     for(int n = a_lowertangent; n%hullA.size()!=0; n++)
     {
         hull.push_back(hullA[n%hullA.size()]);

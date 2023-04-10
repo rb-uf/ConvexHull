@@ -11,6 +11,8 @@ std::vector<SimplePoint2D> Point2DToVector(const Point2D& p2D);
 
 bool isCounterClockwiseTurn(const SimplePoint2D& p1, const SimplePoint2D& p2, const SimplePoint2D& p3);
 
+vector<SimplePoint2D> clockwiseHull(vector<SimplePoint2D> points);
+
 std::vector<Segment2D> pointsToSegments(const std::vector<SimplePoint2D>& points);
 Number orientation(const SimplePoint2D& p, const SimplePoint2D& q, const SimplePoint2D& r);
 Number crossProduct(const SimplePoint2D& p1, const SimplePoint2D& p2, const SimplePoint2D& p3);
