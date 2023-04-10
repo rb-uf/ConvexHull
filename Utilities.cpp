@@ -6,10 +6,17 @@ Number distSquared(SimplePoint2D a, SimplePoint2D b)
     return (a.x - b.x).square() + (a.y - b.y).square();
 }
 
+Number orientation(SimplePoint2D p, SimplePoint2D q, SimplePoint2D r)
+{   
+    Number turn = (q.y - p.y) * (r.x -q.x) - (q.x - p.x) * (r.y - q.y);
+    return turn;
+}
+
 SimplePoint2D relativeCoord(SimplePoint2D origin, SimplePoint2D p)
 {
     return SimplePoint2D(p.x - origin.x, p.y - origin.y);
 }
+
 std::vector<SimplePoint2D> Point2DToVector(Point2D Point2D_points)
 {
     std::vector<SimplePoint2D> points;
