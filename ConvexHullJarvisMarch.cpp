@@ -57,11 +57,11 @@ Region2D ConvexHullJarvisMarch(Point2D pointset){
         }
         q = (p + 1) % points.size();
     }
-
+/*
     for(int k=0; k<hull.size(); k++){
        cout<<"("<<hull[k].x<<", "<<hull[k].y<<")"<<endl;
     }
-
+*/
     vector<Segment2D> hullSegments;
 
     for(int n=0; n<hull.size(); n++){

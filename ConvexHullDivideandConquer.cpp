@@ -104,6 +104,8 @@ vector<SimplePoint2D> removeColinear(vector<SimplePoint2D> pointset)
 
 Region2D ConvexHullDivideandConquer(Point2D pointset)
 {
+    pointset.sort();
+
     vector<SimplePoint2D> points;
     for(Point2D::Iterator iter = pointset.begin(); iter != pointset.end(); iter++)
     {
@@ -118,22 +120,13 @@ Region2D ConvexHullDivideandConquer(Point2D pointset)
     }
 
     vector<SimplePoint2D> hull;
-    if(pointset.isOrdered())
-    {
 
-        hull = internalRecursion(points);   
-    }
-    else
-    {
-        sort(points.begin(),points.end());
-        hull = removeColinear(internalRecursion(points));
-    }
-    
-
+    hull = removeColinear(internalRecursion(points));
+/*
     for(int k=0; k<hull.size(); k++){
        cout<<"("<<hull[k].x<<", "<<hull[k].y<<")"<<endl;
     }
-
+*/
     vector<Segment2D> hullSegments;
 
     for(int n=0; n<hull.size(); n++){
