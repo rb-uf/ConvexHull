@@ -81,6 +81,27 @@ vector<SimplePoint2D> internalRecursion(vector<SimplePoint2D> pointset)
     return merge(internalRecursion(A),internalRecursion(B));                                                                                                                                       
 }
 
+vector<SimplePoint2D> removeColinear(vector<SimplePoint2D> pointset)
+{
+    vector<SimplePoint2D> newPoints;
+    int colinear = -1;
+    for(int i=0; i<pointset.size(); i++){
+        if(i < pointset.size()-2){
+            if(i != colinear){
+                newPoints.push_back(pointset[i]);
+            }
+            if(orientation(pointset[i],pointset[i+1],pointset[i+2]) == Number("0")){
+                colinear = i+1;
+            }
+        }
+        else{
+            newPoints.push_back(pointset[i]);
+        }
+    }
+
+    return newPoints;
+}
+
 Region2D ConvexHullDivideandConquer(Point2D pointset)
 {
     vector<SimplePoint2D> points;
@@ -105,26 +126,9 @@ Region2D ConvexHullDivideandConquer(Point2D pointset)
     else
     {
         sort(points.begin(),points.end());
-        hull = internalRecursion(points);
+        hull = removeColinear(internalRecursion(points));
     }
-    vector<int> colinear;
-    vector<SimplePoint2D> correctHull;
-    for(int m=0; m<hull.size()-2; m++){
-        if(orientation(hull[m],hull[m+1],hull[m+2]) == Number("0")){
-            colinear.push_back(m+1);
-        }
-    }
-    int t = 0;
-    for(int n=0; n<hull.size(); n++){
-        if(n == colinear[t]){
-            t++;
-        }
-        else{
-            correctHull.push_back(hull[n]);
-        }
-    }
-
-    hull = correctHull;
+    
 
     for(int k=0; k<hull.size(); k++){
        cout<<"("<<hull[k].x<<", "<<hull[k].y<<")"<<endl;
