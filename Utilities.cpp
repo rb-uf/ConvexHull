@@ -34,11 +34,10 @@ vector<SimplePoint2D> clockwiseHull(vector<SimplePoint2D> points)
         hull.push_back(points[p]);
         for(int j = 0; j < points.size(); j++)
         {
-            if(orientation(points[p], points[j], points[q]) > Number("0"))
+            if(orientation(points[p], points[j], points[q]) > zero)
             {
                 q = j;
             }
-            
         }
         p = q;
         if(p == left)
@@ -81,6 +80,7 @@ std::vector<Segment2D> pointsToSegments(const std::vector<SimplePoint2D>& points
 Number orientation(const SimplePoint2D& p, const SimplePoint2D& q, const SimplePoint2D& r)
 {
     return (q.x - p.x) * (r.y - q.y) - (r.x - q.x) * (q.y - p.y);
+//    return (q.y - p.y) * (r.x - q.x) - (q.x - p.x) * (r.y - q.y);
 }
 bool isCounterClockwiseTurn(const SimplePoint2D& p, const SimplePoint2D& q, const SimplePoint2D& r)
 {
