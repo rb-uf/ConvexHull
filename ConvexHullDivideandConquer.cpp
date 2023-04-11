@@ -4,7 +4,7 @@
 #include <iostream>
 using namespace std;
 
-static Number zero = Number("0");
+
 
 vector<SimplePoint2D> merge(vector<SimplePoint2D> hullA, vector<SimplePoint2D> hullB)
 {
@@ -24,11 +24,11 @@ vector<SimplePoint2D> merge(vector<SimplePoint2D> hullA, vector<SimplePoint2D> h
     {
 
         done = true;
-        while(orientation(hullB[b_uppertangent],hullA[a_uppertangent],hullA[(a_uppertangent - 1 + hullA.size()) % hullA.size()]) >= zero)
+        while(orientation(hullB[b_uppertangent],hullA[a_uppertangent],hullA[(a_uppertangent - 1 + hullA.size()) % hullA.size()]) >= Number("0"))
         {
             a_uppertangent = (a_uppertangent - 1 + hullA.size()) % hullA.size();
         }
-        while(orientation(hullA[a_uppertangent],hullB[b_uppertangent],hullB[(b_uppertangent + 1) % hullB.size()]) <= zero)
+        while(orientation(hullA[a_uppertangent],hullB[b_uppertangent],hullB[(b_uppertangent + 1) % hullB.size()]) <= Number("0"))
         {
             b_uppertangent = (b_uppertangent + 1) % hullB.size();
             done = false;
@@ -38,11 +38,11 @@ vector<SimplePoint2D> merge(vector<SimplePoint2D> hullA, vector<SimplePoint2D> h
     while(!done)
     {
         done = true;
-        while(orientation(hullA[a_lowertangent],hullB[b_lowertangent],hullB[(b_lowertangent - 1 + hullB.size()) % hullB.size()]) >= zero)
+        while(orientation(hullA[a_lowertangent],hullB[b_lowertangent],hullB[(b_lowertangent - 1 + hullB.size()) % hullB.size()]) >= Number("0"))
         {
             b_lowertangent = (b_lowertangent - 1 + hullB.size()) % hullB.size();
         }
-        while(orientation(hullB[b_lowertangent],hullA[a_lowertangent],hullA[(a_lowertangent + 1) % hullA.size()]) <= zero)
+        while(orientation(hullB[b_lowertangent],hullA[a_lowertangent],hullA[(a_lowertangent + 1) % hullA.size()]) <= Number("0"))
         {
             a_lowertangent = (a_lowertangent + 1) % hullA.size();
             done = false;
@@ -78,13 +78,32 @@ vector<SimplePoint2D> internalRecursion(vector<SimplePoint2D> pointset)
     int med = pointset.size() / 2;
     vector<SimplePoint2D> A(&pointset[0],&pointset[med]);
     vector<SimplePoint2D> B(&pointset[med],&pointset[pointset.size()]);
-    return merge(internalRecursion(A),internalRecursion(B));
+    return merge(internalRecursion(A),internalRecursion(B));                                                                                                                                       
+}
+
+vector<SimplePoint2D> removeColinear(vector<SimplePoint2D> pointset)
+{
+    vector<SimplePoint2D> newPoints;
+    int colinear = -1;
+    for(int i=0; i<pointset.size(); i++){
+        if(i < pointset.size()-2){
+            if(i != colinear){
+                newPoints.push_back(pointset[i]);
+            }
+            if(orientation(pointset[i],pointset[i+1],pointset[i+2]) == Number("0")){
+                colinear = i+1;
+            }
+        }
+        else{
+            newPoints.push_back(pointset[i]);
+        }
+    }
+
+    return newPoints;
 }
 
 Region2D ConvexHullDivideandConquer(Point2D pointset)
 {
-    pointset.sort();
-
     vector<SimplePoint2D> points;
     for(Point2D::Iterator iter = pointset.begin(); iter != pointset.end(); iter++)
     {
@@ -99,33 +118,22 @@ Region2D ConvexHullDivideandConquer(Point2D pointset)
     }
 
     vector<SimplePoint2D> hull;
+    if(pointset.isOrdered())
+    {
 
-    hull = internalRecursion(points);   
-
-    vector<int> colinear;
-    vector<SimplePoint2D> correctHull;
-    for(int m=0; m<hull.size()-2; m++){
-        if(orientation(hull[m],hull[m+1],hull[m+2]) == Number("0")){
-            colinear.push_back(m+1);
-        }
+        hull = internalRecursion(points);   
     }
-    int t = 0;
-    for(int n=0; n<hull.size(); n++){
-        if(n == colinear[t]){
-            t++;
-        }
-        else{
-            correctHull.push_back(hull[n]);
-        }
+    else
+    {
+        sort(points.begin(),points.end());
+        hull = removeColinear(internalRecursion(points));
     }
+    
 
-    hull = correctHull;
-
-/*
     for(int k=0; k<hull.size(); k++){
        cout<<"("<<hull[k].x<<", "<<hull[k].y<<")"<<endl;
     }
-*/
+
     vector<Segment2D> hullSegments;
 
     for(int n=0; n<hull.size(); n++){
@@ -136,8 +144,9 @@ Region2D ConvexHullDivideandConquer(Point2D pointset)
         {
             hullSegments.push_back(Segment2D(hull[n],hull[n+1]));
         }
-
+        
     }
 
     return Region2D(hullSegments);
+
 }

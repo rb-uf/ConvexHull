@@ -42,7 +42,7 @@ void runTestAndTime(vector<SimplePoint2D> p)
     Region2D r3 = ConvexHullQuickhull(Point2D(p));
     stop = getTime();
     cout << "Quickhull runtime:             " << (stop - start) << endl;
-/*
+
     start = getTime();
     Region2D r4 = ConvexHullJarvisMarch(Point2D(p));
     stop = getTime();
@@ -57,13 +57,13 @@ void runTestAndTime(vector<SimplePoint2D> p)
     Region2D r6 = ConvexHullIncremental(Point2D(p));
     stop = getTime();
     cout << "Incremental runtime:           " << (stop - start) << endl;
-*/
+
     cout << endl;
     cout << "MonotoneChain and GrahamScan output " << (r1 == r2 ? "matches." : "doesn't match.") << endl;
     cout << "MonotoneChain and Quickhull output " << (r1 == r3 ? "matches." : "doesn't match.") << endl;
-//    cout << "MonotoneChain and JarvisMarch output " << (r1 == r4 ? "matches." : "doesn't match.") << endl;
-//    cout << "MonotoneChain and DivideandConquer output " << (r1 == r5 ? "matches." : "doesn't match.") << endl;
-//    cout << "MonotoneChain and Incremental output " << (r1 == r6 ? "matches." : "doesn't match.") << endl;
+    cout << "MonotoneChain and JarvisMarch output " << (r1 == r4 ? "matches." : "doesn't match.") << endl;
+    cout << "MonotoneChain and DivideandConquer output " << (r1 == r5 ? "matches." : "doesn't match.") << endl;
+    cout << "MonotoneChain and Incremental output " << (r1 == r6 ? "matches." : "doesn't match.") << endl;
 }
 
 int main()
