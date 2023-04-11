@@ -27,9 +27,11 @@ vector<SimplePoint2D> clockwiseHull(vector<SimplePoint2D> points)
 
     while (true) {
         hull.push_back(points[p]);
+        std::cout << "DEBUG in for" << std::endl;
         for(int j = 0; j < points.size(); j++)
             if(orientation(points[p], points[j], points[q]) > zero)
                 q = j;
+        std::cout << "DEBUG out for" << std::endl;
 
         p = q;
         if(p == left)
@@ -37,6 +39,7 @@ vector<SimplePoint2D> clockwiseHull(vector<SimplePoint2D> points)
 
         q = (p + 1) % points.size();
     }
+        cout << "DEBUG end of clockwise hull 2" << endl;
 
     return hull;
 }

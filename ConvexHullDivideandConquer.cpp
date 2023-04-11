@@ -8,6 +8,7 @@ static Number zero = Number("0");
 
 vector<SimplePoint2D> merge(vector<SimplePoint2D> hullA, vector<SimplePoint2D> hullB)
 {
+    cout << "DEBUG entering merge" << endl;
     bool done = false;
     int rightmost = 0;
     for(int i=0; i<hullA.size(); i++){
@@ -15,6 +16,7 @@ vector<SimplePoint2D> merge(vector<SimplePoint2D> hullA, vector<SimplePoint2D> h
             rightmost = i;
         }
     }
+    cout << "DEBUG found rightmost" << endl;
     int a_uppertangent = rightmost;
     int a_lowertangent = rightmost;
     int b_uppertangent = 0;
@@ -24,10 +26,12 @@ vector<SimplePoint2D> merge(vector<SimplePoint2D> hullA, vector<SimplePoint2D> h
         done = true;
         while(orientation(hullB[b_uppertangent],hullA[a_uppertangent],hullA[(a_uppertangent - 1 + hullA.size()) % hullA.size()]) >= zero)
         {
+    cout << "DEBUG inner loop 1" << endl;
             a_uppertangent = (a_uppertangent == 0) ? (hullA.size() - 1) : (a_uppertangent - 1);
         }
         while(orientation(hullA[a_uppertangent],hullB[b_uppertangent],hullB[(b_uppertangent + 1) % hullB.size()]) <= zero)
         {
+    cout << "DEBUG inner loop 2" << endl;
             b_uppertangent = (b_uppertangent >= hullB.size() - 1) ? (0) : (b_uppertangent + 1);
             done = false;
         }
@@ -39,12 +43,14 @@ vector<SimplePoint2D> merge(vector<SimplePoint2D> hullA, vector<SimplePoint2D> h
         done = true;
         while(orientation(hullA[a_lowertangent],hullB[b_lowertangent],hullB[(b_lowertangent - 1 + hullB.size()) % hullB.size()]) >= zero)
         {
+    cout << "DEBUG inner loop 3" << endl;
             b_lowertangent = (b_lowertangent == 0) ? (hullB.size() - 1) : (b_lowertangent - 1);
             cout << "DEBUG loop3" << endl;
 
         }
         while(orientation(hullB[b_lowertangent],hullA[a_lowertangent],hullA[(a_lowertangent + 1) % hullA.size()]) <= zero)
         {
+    cout << "DEBUG inner loop 4" << endl;
             a_lowertangent = (a_lowertangent >= hullA.size() - 1) ? (0) : (a_lowertangent + 1);
             done = false;
             cout << "DEBUG loop4" << endl;
@@ -73,25 +79,10 @@ vector<SimplePoint2D> merge(vector<SimplePoint2D> hullA, vector<SimplePoint2D> h
 
 }
 
-
-vector<SimplePoint2D> internalRecursion(vector<SimplePoint2D> pointset)
-{
-    cout << "DEBUG enter internalRecursion" << endl;
-
-    if(pointset.size() <= 5) {
-    cout << "DEBUG begin clockwise hull" << endl;
-        return clockwiseHull(pointset);
-    cout << "DEBUG end of clockwise hull" << endl;
-}
-    int med = pointset.size() / 2;
-    vector<SimplePoint2D> A(&pointset[0],&pointset[med]);
-    vector<SimplePoint2D> B(&pointset[med],&pointset[pointset.size()]);
-    cout << "DEBUG end of internalRecursion" << endl;
-    return merge(internalRecursion(A),internalRecursion(B));
-}
-
 vector<SimplePoint2D> removeColinear(vector<SimplePoint2D> points)
 {
+    cout << "DEBUG start removeColinear" << endl;
+
     vector<SimplePoint2D> newPoints;
     int size = points.size();
 
@@ -107,6 +98,23 @@ vector<SimplePoint2D> removeColinear(vector<SimplePoint2D> points)
     return newPoints;
 }
 
+vector<SimplePoint2D> internalRecursion(vector<SimplePoint2D> pointset)
+{
+    cout << "DEBUG enter internalRecursion" << endl;
+
+    if(pointset.size() <= 5)
+        return clockwiseHull(pointset);
+
+    cout << "DEBUG before size" << endl;
+    int med = pointset.size() / 2;
+    cout << "DEBUG copy vectors start" << endl;
+    vector<SimplePoint2D> A(&pointset[0],&pointset[med]);
+    vector<SimplePoint2D> B(&pointset[med],&pointset[pointset.size()]);
+    cout << "DEBUG end of internalRecursion" << endl;
+    return merge(internalRecursion(A),internalRecursion(B));
+}
+
+
 Region2D ConvexHullDivideandConquer(Point2D pointset)
 {
     pointset.sort();
@@ -116,7 +124,9 @@ Region2D ConvexHullDivideandConquer(Point2D pointset)
     if(points.size() < 3)
         return Region2D();
 
-    vector<SimplePoint2D> hull = removeColinear(internalRecursion(points));
+    vector<SimplePoint2D> hull1 = internalRecursion(points);
+    cout << "DEBUG Recursion over." << endl;
+    vector<SimplePoint2D> hull = removeColinear(hull1);
 /*
     for (SimplePoint2D p : hull)
         p.print();
