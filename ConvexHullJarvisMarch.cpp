@@ -3,7 +3,7 @@
 #include <iostream>
 using namespace std;
 
-
+static Number zero = Number("0");
 
 Region2D ConvexHullJarvisMarch(Point2D pointset){
     vector<SimplePoint2D> points;
@@ -37,11 +37,11 @@ Region2D ConvexHullJarvisMarch(Point2D pointset){
         hull.push_back(points[p]);
         for(int j = 0; j < points.size(); j++)
         {
-            if(orientation(points[p], points[j], points[q]) > Number("0"))
+            if(orientation(points[p], points[j], points[q]) > zero)
             {
                 q = j;
             }
-            else if(orientation(points[p],points[j],points[q]) == Number("0"))
+            else if(orientation(points[p],points[j],points[q]) == zero)
             {
                 if(distSquared(points[p],points[j]) > distSquared(points[q],points[p]))
                 {
