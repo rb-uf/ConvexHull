@@ -24,10 +24,21 @@ vector<SimplePoint2D> merge(vector<SimplePoint2D> hullA, vector<SimplePoint2D> h
         done = true;
         while(orientation(hullB[b_uppertangent],hullA[a_uppertangent],hullA[(a_uppertangent - 1 + hullA.size()) % hullA.size()]) >= zero)
         {
+            if(hullA.size() == 2){
+                if(hullA[0].y > hullA[1].y){a_uppertangent = 0;}
+                else{a_uppertangent = 1;}
+                break;
+            }
             a_uppertangent = (a_uppertangent == 0) ? (hullA.size() - 1) : (a_uppertangent - 1);
         }
         while(orientation(hullA[a_uppertangent],hullB[b_uppertangent],hullB[(b_uppertangent + 1) % hullB.size()]) <= zero)
         {
+            if(hullB.size() == 2){
+                if(hullB[0].y > hullB[1].y){b_uppertangent = 0;}
+                else{b_uppertangent = 1;}
+                done = false;
+                break;
+            }
             b_uppertangent = (b_uppertangent >= hullB.size() - 1) ? (0) : (b_uppertangent + 1);
             done = false;
         }
@@ -39,12 +50,23 @@ vector<SimplePoint2D> merge(vector<SimplePoint2D> hullA, vector<SimplePoint2D> h
         done = true;
         while(orientation(hullA[a_lowertangent],hullB[b_lowertangent],hullB[(b_lowertangent - 1 + hullB.size()) % hullB.size()]) >= zero)
         {
+            if(hullB.size() == 2){
+                if(hullB[0].y < hullB[1].y){b_lowertangent = 0;}
+                else{b_lowertangent = 1;}
+                break;
+            }
             b_lowertangent = (b_lowertangent == 0) ? (hullB.size() - 1) : (b_lowertangent - 1);
             cout << "DEBUG loop3" << endl;
 
         }
         while(orientation(hullB[b_lowertangent],hullA[a_lowertangent],hullA[(a_lowertangent + 1) % hullA.size()]) <= zero)
         {
+            if(hullA.size() == 2){
+                if(hullA[0].y < hullA[1].y){a_lowertangent = 0;}
+                else{a_lowertangent = 1;}
+                done = false;
+                break;
+            }
             a_lowertangent = (a_lowertangent >= hullA.size() - 1) ? (0) : (a_lowertangent + 1);
             done = false;
             cout << "DEBUG loop4" << endl;

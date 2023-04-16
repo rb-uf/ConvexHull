@@ -30,6 +30,13 @@ vector<SimplePoint2D> clockwiseHull(vector<SimplePoint2D> points)
         for(int j = 0; j < points.size(); j++)
             if(orientation(points[p], points[j], points[q]) > zero)
                 q = j;
+            else if(orientation(points[p],points[j],points[q]) == Number("0"))
+            {
+                if(distSquared(points[p],points[j]) > distSquared(points[q],points[p]))
+                {
+                    q = j;
+                }
+            }
 
         p = q;
         if(p == left)
