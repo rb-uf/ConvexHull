@@ -47,12 +47,12 @@ void runTestAndTime(vector<SimplePoint2D> p)
     Region2D r4 = ConvexHullJarvisMarch(Point2D(p));
     stop = getTime();
     cout << "JarvisMarch runtime:           " << (stop - start) << endl;
-/*
+
     start = getTime();
     Region2D r5 = ConvexHullDivideandConquer(Point2D(p));
     stop = getTime();
     cout << "DivideandConquer runtime:      " << (stop - start) << endl;
-*/
+
     start = getTime();
     Region2D r6 = ConvexHullIncremental(Point2D(p));
     stop = getTime();
@@ -62,7 +62,7 @@ void runTestAndTime(vector<SimplePoint2D> p)
     cout << "MonotoneChain and GrahamScan output " << (r1 == r2 ? "matches." : "doesn't match.") << endl;
     cout << "MonotoneChain and Quickhull output " << (r1 == r3 ? "matches." : "doesn't match.") << endl;
     cout << "MonotoneChain and JarvisMarch output " << (r1 == r4 ? "matches." : "doesn't match.") << endl;
-//    cout << "MonotoneChain and DivideandConquer output " << (r1 == r5 ? "matches." : "doesn't match.") << endl;
+    cout << "MonotoneChain and DivideandConquer output " << (r1 == r5 ? "matches." : "doesn't match.") << endl;
     cout << "MonotoneChain and Incremental output " << (r1 == r6 ? "matches." : "doesn't match.") << endl;
 }
 
@@ -77,19 +77,15 @@ int main()
     cout << endl;
 
     cout << "-------- test3: 100 points --------" << endl;
-    runTestAndTime(randomVectorSimplePoint2D(100, 0, 500, 0, 500));
-    cout << endl;
-
-    cout << "-------- test4: 500 points --------" << endl;
-    runTestAndTime(randomVectorSimplePoint2D(500, 0, 500, 0, 500));
+    runTestAndTime(randomVectorSimplePoint2D(100, 0, 50000, 0, 50000));
     cout << endl;
 
     cout << "-------- test5: 1000 points --------" << endl;
-    runTestAndTime(randomVectorSimplePoint2D(1000, 0, 500, 0, 500));
+    runTestAndTime(randomVectorSimplePoint2D(1000, 0, 500000, 0, 500000));
     cout << endl;
 
-    cout << "-------- test5: 100000 points --------" << endl;
-    runTestAndTime(randomVectorSimplePoint2D(100000, 0, 500, 0, 500));
+    cout << "-------- test5: 10000 points --------" << endl;
+    runTestAndTime(randomVectorSimplePoint2D(10000, 0, 5000000, 0, 5000000));
     cout << endl;
 
     return 0;
