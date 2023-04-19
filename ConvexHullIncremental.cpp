@@ -79,13 +79,13 @@ Region2D ConvexHullIncremental(Point2D pointset)
         upperTangent = (upperTangent+1)%hull.size();
         lowerTangent = upperTangent;
         //cout<<"Upper Tangent: ";
-        while(orientation(points[j],hull[upperTangent],hull[(upperTangent-1+hull.size())%hull.size()]) >= zero)
+        while(orientation(points[j],hull[upperTangent],hull[(upperTangent-1+hull.size())%hull.size()]) <= zero)
         {
             upperTangent = (upperTangent-1+hull.size())%hull.size();
         }
         //cout<<hull[upperTangent].x<<" "<<hull[upperTangent].y<<endl;
         //cout<<"Lower Tangent: ";
-        while(orientation(points[j],hull[lowerTangent],hull[(lowerTangent+1)%hull.size()]) <= zero)
+        while(orientation(points[j],hull[lowerTangent],hull[(lowerTangent+1)%hull.size()]) >= zero)
         {
             lowerTangent = (lowerTangent+1)%hull.size();
         }
@@ -108,10 +108,7 @@ Region2D ConvexHullIncremental(Point2D pointset)
         hull = tmpHull;
         
     }
-/*
-    for(int k=0; k<hull.size(); k++){
-        cout<<"("<<hull[k].x<<", "<<hull[k].y<<")"<<endl;
-    }
-*/
+
+
     return pointsToRegion(hull);
 }

@@ -37,7 +37,7 @@ Region2D ConvexHullJarvisMarch(Point2D pointset){
         hull.push_back(points[p]);
         for(int j = 0; j < points.size(); j++)
         {
-            if(orientation(points[p], points[j], points[q]) > zero)
+            if(orientation(points[p], points[j], points[q]) < zero)
             {
                 q = j;
             }
@@ -57,11 +57,7 @@ Region2D ConvexHullJarvisMarch(Point2D pointset){
         }
         q = (p + 1) % points.size();
     }
-/*
-    for(int k=0; k<hull.size(); k++){
-       cout<<"("<<hull[k].x<<", "<<hull[k].y<<")"<<endl;
-    }
-*/
+
     vector<Segment2D> hullSegments;
 
     for(int n=0; n<hull.size(); n++){
