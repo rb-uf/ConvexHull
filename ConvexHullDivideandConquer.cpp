@@ -138,22 +138,6 @@ vector<SimplePoint2D> removeColinear(vector<SimplePoint2D> points)
     return newPoints;
 }
 
-vector<SimplePoint2D> internalRecursion(vector<SimplePoint2D> pointset)
-{
-    //cout << "DEBUG enter internalRecursion" << endl;
-
-    if(pointset.size() <= 5)
-        return clockwiseHull(pointset);
-
-    //cout << "DEBUG before size" << endl;
-    int med = pointset.size() / 2;
-    //cout << "DEBUG copy vectors start" << endl;
-    vector<SimplePoint2D> A(&pointset[0],&pointset[med]);
-    vector<SimplePoint2D> B(&pointset[med],&pointset[pointset.size()]);
-    //cout << "DEBUG end of internalRecursion" << endl;
-    return merge(internalRecursion(A),internalRecursion(B));
-}
-
 
 Region2D ConvexHullDivideandConquer(Point2D pointset)
 {
