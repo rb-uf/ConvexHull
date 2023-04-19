@@ -80,12 +80,16 @@ int main()
     runTestAndTime(randomVectorSimplePoint2D(100, 0, 50000, 0, 50000));
     cout << endl;
 
-    cout << "-------- test5: 1000 points --------" << endl;
+    cout << "-------- test4: 1000 points --------" << endl;
     runTestAndTime(randomVectorSimplePoint2D(1000, 0, 500000, 0, 500000));
     cout << endl;
 
     cout << "-------- test5: 10000 points --------" << endl;
     runTestAndTime(randomVectorSimplePoint2D(10000, 0, 5000000, 0, 5000000));
+    cout << endl;
+
+    cout << "-------- test6: 100000 points --------" << endl;
+    runTestAndTime(randomVectorSimplePoint2D(100000, 0, 50000000, 0, 50000000));
     cout << endl;
 
     return 0;
