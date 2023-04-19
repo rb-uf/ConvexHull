@@ -38,11 +38,6 @@ Region2D ConvexHullIncremental(Point2D pointset)
         sort(points.begin(),points.end());
     }
 
-//    for(int i=0; i<points.size(); i++){
-        //cout<<"("<<points[i].x<<", "<<points[i].y<<")"<<endl;
-//    }
-
-
     vector<SimplePoint2D> hull;
 
     if(points.size() < 3)
@@ -56,11 +51,9 @@ Region2D ConvexHullIncremental(Point2D pointset)
         hull.push_back(points[i]);
     }
 
+    //Find hull of first 3 points in sorted vector
     hull = clockwiseHull(hull);
 
-    //for(SimplePoint2D sp: hull){
-    //    cout<<sp.x<<" "<<sp.y<<endl;
-    //}
 
     if(points.size() == 3)
     {
@@ -71,40 +64,41 @@ Region2D ConvexHullIncremental(Point2D pointset)
     int lowerTangent = 0;
     vector<SimplePoint2D> tmpHull;
 
-
+    //Incrementally add points to hull while maintaining hull requirements;
     for(int j = 3; j < points.size(); j++)
     {
-        //cout<<j<<": "<<points[j].x<<" "<<points[j].y<<endl;
+ 
         tmpHull.clear();
         upperTangent = (upperTangent+1)%hull.size();
         lowerTangent = upperTangent;
-        //cout<<"Upper Tangent: ";
+
+        //Find Upper Tangent to next leftmost point in sorted vector
         while(orientation(points[j],hull[upperTangent],hull[(upperTangent-1+hull.size())%hull.size()]) <= zero)
         {
             upperTangent = (upperTangent-1+hull.size())%hull.size();
         }
-        //cout<<hull[upperTangent].x<<" "<<hull[upperTangent].y<<endl;
-        //cout<<"Lower Tangent: ";
+
+        //Find Lower Tangent to next leftmost point in sorted vector
         while(orientation(points[j],hull[lowerTangent],hull[(lowerTangent+1)%hull.size()]) >= zero)
         {
             lowerTangent = (lowerTangent+1)%hull.size();
         }
-        //cout<<hull[lowerTangent].x<<" "<<hull[lowerTangent].y<<endl;
-        //cout<<"Hull: ";
+
+        //Push back hull points in to vector and ignore points that are within the region formed by tangents
         for(int k = 0; k <= upperTangent; k++)
         {
-            //cout<<hull[k].x<<" "<<hull[k].y<<"| ";
+
             tmpHull.push_back(hull[k]);
         }
 
 
         tmpHull.push_back(points[j]);
-        //cout<<points[j].x<<" "<<points[j].y<<"| ";
+
         for(int n = lowerTangent; n%hull.size()!= 0; n++){
-            //cout<<hull[n%hull.size()].x<<" "<<hull[n%hull.size()].y<<"| ";
+
             tmpHull.push_back(hull[n%hull.size()]);
         }
-        //cout<<endl;
+
         hull = tmpHull;
         
     }

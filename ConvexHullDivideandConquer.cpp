@@ -7,8 +7,10 @@ using namespace std;
 
 static Number zero = Number("0");
 
+
 vector<SimplePoint2D> merge(vector<SimplePoint2D> hullA, vector<SimplePoint2D> hullB)
 {
+    // Find rightmost point of Hull A and leftmost point of Hull B is 0
     bool done = false;
     int rightmost = 0;
     for(int i=0; i<hullA.size(); i++){
@@ -21,16 +23,13 @@ vector<SimplePoint2D> merge(vector<SimplePoint2D> hullA, vector<SimplePoint2D> h
     int b_uppertangent = 0;
     int b_lowertangent = 0;
     
-
+    // Find Upper Tangent
     while (!done) {
         done = true;
-        //out<<"1 ";
+        //Find point on Hull A that forms part of Upper Tangent
         while(orientation(hullB[b_uppertangent],hullA[a_uppertangent],hullA[(a_uppertangent - 1 + hullA.size()) % hullA.size()]) <= zero)
         {
-            //cout<<"2 ";
-            //cout<<"/"<<a_uppertangent<<" "<<hullA.size()<<" "<<hullB.size()<<" ";
-            //cout<<"("<<hullA[a_uppertangent].x<<", "<<hullA[a_uppertangent].y<<") ";
-            //cout<<"("<<hullB[b_uppertangent].x<<", "<<hullB[b_uppertangent].y<<")  ";
+            //If hull is a set of two points then tangent points are trivial to figure
             if(hullA.size() == 2){
                 if(hullA[0].y > hullA[1].y){a_uppertangent = 0;}
                 else{a_uppertangent = 1;}
@@ -38,12 +37,10 @@ vector<SimplePoint2D> merge(vector<SimplePoint2D> hullA, vector<SimplePoint2D> h
             }
             a_uppertangent = (a_uppertangent - 1 + hullA.size()) % hullA.size();
         }
+        //Find point on Hull B that forms part of Upper Tangent
         while(orientation(hullA[a_uppertangent],hullB[b_uppertangent],hullB[(b_uppertangent + 1) % hullB.size()]) >= zero)
         {
-            //cout<<"3 ";
-            //cout<<"|"<<b_uppertangent<<" "<<hullA.size()<<" "<<hullB.size()<<" ";
-            //cout<<"("<<hullA[a_uppertangent].x<<", "<<hullA[a_uppertangent].y<<") ";
-            //cout<<"("<<hullB[b_uppertangent].x<<", "<<hullB[b_uppertangent].y<<")  ";
+
             if(hullB.size() == 2){
                 if(hullB[0].y > hullB[1].y){b_uppertangent = 0;}
                 else{b_uppertangent = 1;}
@@ -55,16 +52,15 @@ vector<SimplePoint2D> merge(vector<SimplePoint2D> hullA, vector<SimplePoint2D> h
         }
     }
     done = false;
+
+    //Find Lower Tangent
     while(!done)
     {
-        //cout<<"4 ";
+
         done = true;
+        //Find point on Hull B that forms part of the lower tangent
         while(orientation(hullA[a_lowertangent],hullB[b_lowertangent],hullB[(b_lowertangent - 1 + hullB.size()) % hullB.size()]) <= zero)
         {
-            //cout<<"5 ";
-            //cout<<"$"<<b_lowertangent<<" "<<hullA.size()<<" "<<hullB.size()<<" ";
-            //cout<<"("<<hullA[a_lowertangent].x<<", "<<hullA[a_lowertangent].y<<") ";
-            //cout<<"("<<hullB[b_lowertangent].x<<", "<<hullB[b_lowertangent].y<<")  ";
             if(hullB.size() == 2){
                 if(hullB[0].y < hullB[1].y){b_lowertangent = 0;}
                 else{b_lowertangent = 1;}
@@ -73,12 +69,9 @@ vector<SimplePoint2D> merge(vector<SimplePoint2D> hullA, vector<SimplePoint2D> h
             b_lowertangent = (b_lowertangent - 1 + hullB.size()) % hullB.size();
 
         }
+        // Find point on Hull A that forms part of the lower tangent
         while(orientation(hullB[b_lowertangent],hullA[a_lowertangent],hullA[(a_lowertangent + 1) % hullA.size()]) >= zero)
         {
-            //cout<<"6 ";
-            //cout<<"'"<<a_lowertangent<<" "<<hullA.size()<<" "<<hullB.size()<<" ";
-            //cout<<"("<<hullA[a_lowertangent].x<<", "<<hullA[a_lowertangent].y<<") ";
-            //cout<<"("<<hullB[b_lowertangent].x<<", "<<hullB[b_lowertangent].y<<")  ";
             if(hullA.size() == 2){
                 if(hullA[0].y < hullA[1].y){a_lowertangent = 0;}
                 else{a_lowertangent = 1;}
@@ -89,7 +82,8 @@ vector<SimplePoint2D> merge(vector<SimplePoint2D> hullA, vector<SimplePoint2D> h
             done = false;
         }
     }
-    //h cout<<endl;
+
+    //Merge Hull A and B by going clockwise over all the point and ignoring points that are within the tangents
     vector<SimplePoint2D> hull;
     for(int j=0; j<=a_uppertangent; j++)
     {
@@ -109,18 +103,21 @@ vector<SimplePoint2D> merge(vector<SimplePoint2D> hullA, vector<SimplePoint2D> h
 
 }
 
-
+//Main recursive body
 vector<SimplePoint2D> internalRecursion(vector<SimplePoint2D> pointset)
 {
+    //Base case for when point sizes are less than 5 to prevent special cases that may cause failure
     if(pointset.size() <= 5) {
         return clockwiseHull(pointset);
     }
+    //Splits sorted array into halves, recursively computes hulls for halfs and then merges hulls together
     int med = pointset.size() / 2;
     vector<SimplePoint2D> A(&pointset[0],&pointset[med]);
     vector<SimplePoint2D> B(&pointset[med],&pointset[pointset.size()]);
     return merge(internalRecursion(A),internalRecursion(B));
 }
 
+//Removes Collinear points by checking if points along the hull are collinear and then deleting.
 vector<SimplePoint2D> removeColinear(vector<SimplePoint2D> points)
 {
     vector<SimplePoint2D> newPoints;
@@ -149,11 +146,8 @@ Region2D ConvexHullDivideandConquer(Point2D pointset)
     if(points.size() < 3)
         return Region2D();
 
+    //Calls internal recursive method to implement Divide and Conquer
     vector<SimplePoint2D> hull = internalRecursion(points);
-
-    for(int i = 0; i<hull.size(); i++){
-        cout<<hull[i].x<<" "<<hull[i].y<<endl;
-    }
 
 
     return Region2D(pointsToSegments(hull));
