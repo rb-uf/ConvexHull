@@ -2,7 +2,7 @@
 #include <chrono>
 #include "Utilities.h"
 
-static Number zero = Number();
+static Number zero = Number("0");
 
 Number distSquared(const SimplePoint2D& a, const SimplePoint2D& b)
 {
@@ -27,9 +27,8 @@ vector<SimplePoint2D> clockwiseHull(vector<SimplePoint2D> points)
 
     while (true) {
         hull.push_back(points[p]);
-//        std::cout << "DEBUG in for" << std::endl;
-        for(int j = 0; j < points.size(); j++)
-            if(orientation(points[p], points[j], points[q]) > zero)
+        for(int j = 0; j < points.size(); j++){
+            if(orientation(points[p], points[j], points[q]) < zero)
                 q = j;
             else if(orientation(points[p],points[j],points[q]) == zero)
             {
@@ -38,7 +37,7 @@ vector<SimplePoint2D> clockwiseHull(vector<SimplePoint2D> points)
                     q = j;
                 }
             }
-
+        }
         p = q;
         if(p == left)
             break;

@@ -20,6 +20,7 @@ Region2D ConvexHullJarvisMarch(Point2D pointset){
 
     vector<SimplePoint2D> hull;
 
+    //Find leftmost point, this is guaranteed to be in the hull
     int left = 0;
     for(int i = 1; i < points.size(); i++)
     {
@@ -29,18 +30,21 @@ Region2D ConvexHullJarvisMarch(Point2D pointset){
         }
     }
 
+
     int p = left;
     int q = (p + 1) % points.size();
     int finish = 0;
     while(finish < 1)
     {
         hull.push_back(points[p]);
+        //Calculate the point that makes the leftmost turn from the leftmost point and add it to the hull
         for(int j = 0; j < points.size(); j++)
         {
-            if(orientation(points[p], points[j], points[q]) > zero)
+            if(orientation(points[p], points[j], points[q]) < zero)
             {
                 q = j;
             }
+            //Handles collinear points by adding point which is the father distance from p
             else if(orientation(points[p],points[j],points[q]) == zero)
             {
                 if(distSquared(points[p],points[j]) > distSquared(points[q],points[p]))
@@ -57,12 +61,10 @@ Region2D ConvexHullJarvisMarch(Point2D pointset){
         }
         q = (p + 1) % points.size();
     }
-/*
-    for(int k=0; k<hull.size(); k++){
-       cout<<"("<<hull[k].x<<", "<<hull[k].y<<")"<<endl;
-    }
-*/
+
     vector<Segment2D> hullSegments;
+
+    // Form hull segments and push into vector
 
     for(int n=0; n<hull.size(); n++){
         if(n == hull.size()-1){
