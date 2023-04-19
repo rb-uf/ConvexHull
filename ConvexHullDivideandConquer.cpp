@@ -89,7 +89,7 @@ vector<SimplePoint2D> merge(vector<SimplePoint2D> hullA, vector<SimplePoint2D> h
             done = false;
         }
     }
-    //cout<<endl;
+    //h cout<<endl;
     vector<SimplePoint2D> hull;
     for(int j=0; j<=a_uppertangent; j++)
     {
